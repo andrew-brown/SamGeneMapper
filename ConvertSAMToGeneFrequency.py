@@ -2,11 +2,9 @@ from humanGenome import *
 from samReader import *
 from configuration import *
 import os
-import multiprocessing as mp
 import copy_reg
 import types
 import threading
-import Queue
 
 def _pickle_method(m):
     if m.im_self is None:
@@ -37,21 +35,6 @@ class SAMConverter(object):
         self.mtReads = []
         self.unmappedReads = []
         
-#    def mapReadsMT(self, slots):
-#        self.logger.logOutput('Opening multithreaded pool for mapping, ' \
-#                              + str(slots) + ' processors.')
-#        cores = (int(slots) * 4)
-#        pool = mp.Pool(processes = cores)
-#        samReads = self.samFile.getReads()  
-#        self.logger.logOutput('Delegating read tasks, ' + str(len(samReads)) + \
-#                              ' total reads to map.')
-#        
-#        results = [pool.apply(self.asyncMapRead, args=(samRead, self.samMap, \
-#                              self.genomeRef,)) for samRead in samReads]
-#        
-#        self.logger.logOutput('Mapping complete, returning object.')                            
-#        return results
-
     def mapReadsMT(self):
         threads = []
         self.logger.logOutput('Opening multithreaded pool for mapping.')
@@ -69,35 +52,9 @@ class SAMConverter(object):
             thread.join()
             
         return
-               
-#    def asyncMapRead(self, samRead, samMap, genomeRef):
-#        print 'Mapping ' + str(samRead.rName) + ' start: ' + str(samRead.pos) + \
-#              ', end: ' + str(samRead.endPos) + '.\n'
-#        result = genomeRef.get_genes_ByCoordinates(samRead.rName, \
-#                                                   samRead.pos, \
-#                                                   samRead.endPos)
-#        
-#        if len(result) > 0:
-#            s = SAMMap(samRead, result)
-#            
-#            return s
         
-#    def asyncMapRead(self, samRead, samMap, genomeRef, totalReads, currentRead):
-#        print 'Mapping ' + str(samRead.rName) + ' start: ' + str(samRead.pos) + \
-#              ', end: ' + str(samRead.endPos) + ' read: (' + str(currentRead) + \
-#              ' of ' + str(totalReads) + ').\n'
-#              
-#        result = genomeRef.get_genes_ByCoordinates(samRead.rName, \
-#                                                   samRead.pos, \
-#                                                   samRead.endPos)
-#        
-#        if len(result) > 0:
-#            s = SAMMap(samRead, result)
-#            self.mtReads.append(s)
-#        else:
-#            self.unmappedReads.append(samRead)
-        
-    def asyncMapRead(self, samRead, samMap, genomeRef):              
+    def asyncMapRead(self, samRead, samMap, genomeRef):
+        self.logger.logOutput('Mapping read: ' + samRead.qName)              
         result = genomeRef.get_genes_ByCoordinates(samRead.rName, \
                                                    samRead.pos, \
                                                    samRead.endPos)
@@ -107,20 +64,6 @@ class SAMConverter(object):
             self.mtReads.append(s)
         else:
             self.unmappedReads.append(samRead)
-            
-#    def countFrequenciesMT(self, slots, resultArray):
-#        cores = (int(slots) * 4)
-#        pool = mp.Pool(processes = cores)
-#        self.logger.logOutput('Determining unique genes in reads.')
-#        uniqueIds = self.getUniqueGeneNamesAsync(resultArray)
-#        self.logger.logOutput(str(len(uniqueIds)) + ' unique genes found.')
-#        
-#        results = [pool.apply(self.getFrequencyAsync, args=(resultArray, \
-#                              uniqueId, self.genomeRef,)) \
-#                              for uniqueId in uniqueIds]
-#                         
-#        self.logger.logOutput('Frequency count complete.')
-#        return results
             
     def countFrequenciesMT(self, resultArray):
         threads = []

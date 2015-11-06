@@ -30,15 +30,9 @@ converter = SAMConverter(os.path.join(config.getInputDirectory(), sam_file), log
 # Single Threaded --> Very Slow
 #converter.mapReads()
 #frequency_map = converter.countFrequencies()
-#
-#pdb.set_trace()
-#
-#save_object(converter.samMap, str(sam_file + '.read.obj'), config.getOutputDirectory())
-#save_object(converter.freqMap, str(sam_file + '.freq..obj'), config.getOutputDirectory())
 
-# Multi Threaded --> Pass in Number of Processors
-#mtResults = converter.mapReadsMT(int(slots))
-#mtResults = clean_mt_objects(mtResults)
+pdb.set_trace()
+
 converter.mapReadsMT()
 pdb.set_trace()
 converter.countFrequenciesMT(int(slots), mtResults)
@@ -48,9 +42,3 @@ mtFrequency = clean_mt_objects(mtFrequency)
 #save_object(mtFrequency, str(sam_file + '.freq..obj'), config.getOutputDirectory())
 
 log.logOutput('Completed, objects saved to files.')
-
-# Save and Inflate Binary objects
-#o = [1, 2, 3, 4, 5]
-# 
-#save_object(o, '.test.obj', config.getOutputDirectory())
-#q = pickle.load(open(os.path.join(config.getOutputDirectory(), '.test.obj'), 'rb'))
