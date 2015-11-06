@@ -65,7 +65,7 @@ class SAMConverter(object):
         else:
             self.unmappedReads.append(samRead)
             
-    def countFrequenciesMT(self, resultArray):
+    def countFrequenciesMT(self):
         threads = []
         self.logger.logOutput('Determining unique genes in reads.')
         uniqueIds = self.getUniqueGeneNamesAsync(resultArray)
