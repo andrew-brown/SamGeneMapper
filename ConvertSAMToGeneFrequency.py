@@ -6,6 +6,7 @@ import copy_reg
 import types
 import threading
 
+
 def _pickle_method(m):
     if m.im_self is None:
         return getattr, (m.im_class, m.im_func.func_name)
@@ -68,12 +69,12 @@ class SAMConverter(object):
     def countFrequenciesMT(self):
         threads = []
         self.logger.logOutput('Determining unique genes in reads.')
-        uniqueIds = self.getUniqueGeneNamesAsync(resultArray)
+        uniqueIds = self.getUniqueGeneNamesAsync(self.mtReads)
         self.logger.logOutput(str(len(uniqueIds)) + ' unique genes found.')
         
         for uniqueId in uniqueIds:
             t = threading.Thread(target = self.getFrequencyAsync, args = \
-                (self.samMap, uniqueId, self.genomeRef,))
+                (self.mtReads, uniqueId, self.genomeRef,))
             threads.append(t)
             
         for thread in threads:
@@ -87,10 +88,13 @@ class SAMConverter(object):
         return            
        
     def getFrequencyAsync(self, resultArray, geneId, genomeRef):
+        self.logger.logOutput('Counting frequency of ' + str(geneId) + '.')
         frequency = list(filter(lambda x: geneId == x.genomeRef[0].geneId, \
                                     resultArray))        
         gene_name = genomeRef.get_genes_ByGeneId(geneId)[0].name
         fm = FreqMap(len(frequency), geneId, gene_name)
+        self.logger.logOutput(str(fm.freq) + ' occurrences of ' + gene_name + \
+                              ' found.')
         
         self.freqMap.append(fm)
         

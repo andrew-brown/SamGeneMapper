@@ -4,8 +4,6 @@ from logger import *
 import pickle
 import os
 
-import pdb
-
 def save_object(obj, fileName, directory):
     with open(os.path.join(directory, fileName), 'wb') as output:
         pickle.dump(obj, output, pickle.HIGHEST_PROTOCOL)
@@ -23,11 +21,8 @@ converter = SAMConverter(os.path.join(config.getInputDirectory(), sam_file), log
 #converter.mapReads()
 #frequency_map = converter.countFrequencies()
 
-pdb.set_trace()
-
 converter.mapReadsMT()
 converter.countFrequenciesMT()
-pdb.set_trace()
 
 #save_object(mtResults, str(sam_file + '.read.obj'), config.getOutputDirectory())
 #save_object(mtFrequency, str(sam_file + '.freq..obj'), config.getOutputDirectory())
