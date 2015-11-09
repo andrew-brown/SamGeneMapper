@@ -1,6 +1,8 @@
 from ConvertSAMToGeneFrequency import *
 from configuration import *
 from logger import *
+from resultWriter import *
+
 import pickle
 import os
 
@@ -11,6 +13,7 @@ def save_object(obj, fileName, directory):
 
 sam_file = os.environ['INPUT_FILE']
 slots = os.environ['SLOTS']
+output_file = os.environ['OUTPUT_FILE']
 
 config = Configuration()
 log = Logger(config.getOutputDirectory())
@@ -23,6 +26,11 @@ converter = SAMConverter(os.path.join(config.getInputDirectory(), sam_file), log
 
 converter.mapReadsMT()
 converter.countFrequenciesMT()
+
+Writer = ResultWriter(config.getOutputDirectory(), output_file)
+
+Writer.writeFreqMapToFile(converter.freqMap)
+Writer.writeSamMapToFile(converter.mtReads, converter.unmappedReads)
 
 #save_object(mtResults, str(sam_file + '.read.obj'), config.getOutputDirectory())
 #save_object(mtFrequency, str(sam_file + '.freq..obj'), config.getOutputDirectory())

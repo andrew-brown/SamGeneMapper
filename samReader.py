@@ -48,10 +48,30 @@ class SamRead(object):
         self.qual = qual
         self.tags = tags
         self.endPos = (int(self.pos) + len(self.seq))
-
+        
+    def __json__(self):
+        return { 'qName': self.qName, \
+                 'flag': self.flag, \
+                 'rName': self.rName, \
+                 'pos': self.pos, \
+                 'mapq': self.mapq, \
+                 'cigar': self.cigar, \
+                 'mrnm': self.mrnm, \
+                 'mpos': self.mpos, \
+                 'iSize': self.iSize, \
+                 'seq': self.seq, \
+                 'qual': self.qual, \
+                 'tags': self.tags, \
+                 'endPos': self.endPos }
+        
 class SamTag(object):
     
     def __init__(self, tag, tag_type, value):
         self.tag = tag
         self.tag_type = tag_type
         self.value = value
+        
+    def __json__(self):
+        return { 'tag': self.tag, \
+                 'tag_type': self.tag_type, \
+                 'value': self.value }

@@ -60,3 +60,20 @@ class HumanGene(object):
         self.cdsStartStat = cdsStartStat
         self.cdsEndStat = cdsEndStat
         self.exonFrames = exonFrames
+        
+    def __json__(self):
+        return { 'chromosome': self.chromosome, \
+                 'geneId': self.geneId, \
+                 'strand': self.strand, \
+                 'txStart': self.txStart, \
+                 'txEnd': self.txEnd, \
+                 'cdsStart': self.cdsStart, \
+                 'cdsEnd': self.cdsEnd, \
+                 'exonCount': self.exonCount, \
+                 'exonStarts': self.exonStarts, \
+                 'exonEnds': self.exonEnds, \
+                 'score': self.score, \
+                 'name': self.name, \
+                 'cdsStartStat': self.cdsStartStat, \
+                 'cdsEndStat': self.cdsEndStat, \
+                 'exonFrames': self.exonFrames }

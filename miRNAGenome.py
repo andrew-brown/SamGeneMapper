@@ -51,6 +51,14 @@ class miRNA(object):
         self.strand = strand
         self.identifiers = miRNAIdentifiers(identifiers)
         
+    def __json__(self):
+        return { 'chromosome': self.chromosome, \
+                 'miRNAType': self.miRNAType, \
+                 'start': self.start, \
+                 'end': self.end, \
+                 'strand': self.strand, \
+                 'identifiers': self.identifiers }
+        
 
 class miRNAType(object):
     
@@ -59,6 +67,9 @@ class miRNAType(object):
             self.miRNAType = 'primary'
         else:
             self.miRNAType = 'mature'
+            
+    def __json__(self):
+        return { 'miRNAType': self.miRNAType }
             
             
 class miRNAIdentifiers(object):
@@ -72,3 +83,8 @@ class miRNAIdentifiers(object):
         
         if len(ids):
             self.derrivedFrom = ids[3]
+            
+    def __json__(self):
+        return { 'id': self.id, \
+                 'alias': self.alias, \
+                 'name': self.name }

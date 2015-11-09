@@ -156,6 +156,10 @@ class SAMMap(object):
         self.samRead = samRead
         self.genomeRef = genomeRef
         
+    def __json__(self):
+        return { 'samRead': self.samRead, \
+                 'genomeRef': self.genomeRef }
+        
         
 class FreqMap(object):
     
@@ -163,3 +167,8 @@ class FreqMap(object):
         self.freq = freq
         self.geneId = geneId
         self.geneName = geneName
+        
+    def __json__(self):
+        return { 'freq': self.freq, \
+                 'geneId': self.geneId, \
+                 'geneName': self.geneName }

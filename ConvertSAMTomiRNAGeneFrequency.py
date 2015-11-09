@@ -78,6 +78,10 @@ class SAMMapmiRNA(object):
         self.samRead = samRead
         self.miRNARef = miRNARef
         
+    def __json__(self):
+        return { 'samRead': self.samRead, \
+                 'miRNARef': self.miRNARef }
+        
 
 class FreqMapmiRNA(object):
     
@@ -85,3 +89,8 @@ class FreqMapmiRNA(object):
         self.freq = freq
         self.miRNAId = miRNAId
         self.miRNAName = miRNAName
+        
+    def __json__(self):
+        return { 'freq': self.freq, \
+                 'miRNAId': self.miRNAId, \
+                 'miRNAName': self.miRNAName }
